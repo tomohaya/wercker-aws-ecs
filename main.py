@@ -24,6 +24,9 @@ parser.add_argument('--task-definition-file', dest='task_definition_file', requi
 parser.add_argument('--task-role-arn', dest='task_role_arn', required=False)
 parser.add_argument('--service-name', dest='service_name', required=False)
 parser.add_argument('--minimum-running-tasks', type=int, dest='minimum_running_tasks', default=1, required=False)
+parser.add_argument('--execution-role-arn', dest='execution_role_arn', required=False)
+parser.add_argument('--network-mode', dest='network_mode', required=False)
+parser.add_argument('requires-compatibilities', dest='requires_compatibilities', required=False)
 args = parser.parse_args()
 
 try:
@@ -49,7 +52,7 @@ try:
 
     # Step: Register New Task Definition
     h1("Step: Register New Task Definition")
-    response = ecs.register_task_definition(family=args.task_definition_name, role_arn=args.task_role_arn, file=args.task_definition_file)
+    response = ecs.register_task_definition(family=args.task_definition_name, role_arn=args.task_role_arn, execution_role_arn=args.execution_role_arn, network_mode=args.network_mode, requires_compatibilities= args.requires_compatibilities, file=args.task_definition_file)
     task_definition_arn = response.get('taskDefinition').get('taskDefinitionArn')
     success("Registering task definition '%s' succeeded" % task_definition_arn)
 
